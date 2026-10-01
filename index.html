@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Happy 21st Birthday Sneha! ✨🎂</title>
+  <meta name="description"
+    content="A special 21st birthday celebration website made with love for Sneha. Happy Birthday!">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- External Confetti Library (Fallback is also included in script.js for offline) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Full-Page Birthday Background Image (Fades away as you scroll down) -->
+  <div id="site-bg-image-layer" class="site-bg-image-layer" aria-hidden="true">
+    <div class="site-bg-overlay"></div>
+  </div>
+
+  <!-- Floating Sparkles / Balloon Background Layer -->
+  <div id="floating-background" class="floating-background" aria-hidden="true"></div>
+
+  <!-- Canvas for Fireworks & Special Effects -->
+  <canvas id="fireworks-canvas" class="fireworks-canvas" aria-hidden="true"></canvas>
+
+  <!-- Floating Audio Player / Music Toggle -->
+  <div class="audio-control-container">
+    <button id="music-toggle-btn" class="music-toggle-btn" aria-label="Toggle background music and memory slideshow"
+      title="Play 'Thinkin Bout You' and start slideshow">
+      <span class="music-icon" id="music-icon">🎵</span>
+      <span class="music-label">Play Music & Slideshow 🎬</span>
+      <span class="music-wave" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+    </button>
+    <audio id="bg-music" loop preload="auto">
+      <source src="thinkin%20bout%20you.mpeg" type="audio/mpeg">
+      <source src="assets/music.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <!-- Quick Floating Section Navigation (Dots) -->
+  <nav class="floating-nav" id="floating-nav" aria-label="Page Sections">
+    <button class="nav-dot active" data-target="#hero" title="Welcome" aria-label="Go to Welcome"></button>
+    <button class="nav-dot" data-target="#letter" title="Birthday Letter" aria-label="Go to Birthday Letter"></button>
+    <button class="nav-dot" data-target="#counter" title="Our Friendship"
+      aria-label="Go to Friendship Counter"></button>
+    <button class="nav-dot" data-target="#gallery" title="Memories" aria-label="Go to Photo Gallery"></button>
+    <button class="nav-dot" data-target="#messages" title="Special Cards" aria-label="Go to Message Cards"></button>
+    <button class="nav-dot" data-target="#wishes" title="Make a Wish" aria-label="Go to Make a Wish"></button>
+  </nav>
+
+  <!-- Optional Lock / Birthday Countdown Modal (Shown if preview mode is disabled and birthday hasn't arrived) -->
+  <div id="lock-screen" class="lock-screen hidden" aria-modal="true" role="dialog">
+    <div class="lock-card glass-card">
+      <div class="lock-badge">Secret Birthday Gift 🎁</div>
+      <h2 class="lock-title">Patience, Sneha! ✨</h2>
+      <p class="lock-subtitle">This surprise unlocks on your 21st Birthday: <strong>5 October 2026</strong></p>
+      <div class="lock-timer" id="lock-timer">
+        <div class="timer-box"><span id="lock-days">00</span><small>Days</small></div>
+        <div class="timer-box"><span id="lock-hours">00</span><small>Hours</small></div>
+        <div class="timer-box"><span id="lock-mins">00</span><small>Mins</small></div>
+        <div class="timer-box"><span id="lock-secs">00</span><small>Secs</small></div>
+      </div>
+      <p class="lock-hint">Kartik is putting the final touches on your digital gift...</p>
+      <button id="bypass-lock-btn" class="btn-secondary">Preview Surprise Now 🔓</button>
+    </div>
+  </div>
+
+  <main id="main-content">
+    <!-- ==================== 1. HERO / WELCOME ==================== -->
+    <section id="hero" class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge animate-pop">Chapter 21 • 05.10.2026 🥂</div>
+        <h1 class="hero-title">
+          Happy 21st Birthday,<br>
+          <span class="name-gradient">Sneha</span> 🎂
+        </h1>
+        <p class="hero-subtitle">
+          To the brightest smile, funniest friend, and the most extraordinary soul turning 21 today. Here’s your digital
+          birthday gift!
+        </p>
+
+        <div class="hero-cta-wrapper">
+          <button id="surprise-btn" class="btn-primary pulse-btn">
+            Open your surprise 🎁
+          </button>
+        </div>
+        <div class="scroll-hint" id="scroll-hint">
+          <span>Scroll down for magic</span>
+          <div class="mouse-icon">
+            <div class="wheel"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. BIRTHDAY LETTER ==================== -->
+    <section id="letter" class="section-container letter-section">
+      <div class="section-header">
+        <span class="section-tag">A Special Note Just For You</span>
+        <h2 class="section-title">A Letter For You 💌</h2>
+        <p class="section-desc">Click the envelope below to open and reveal the letter inside.</p>
+      </div>
+
+      <div class="envelope-wrapper">
+        <div class="envelope" id="envelope-container" role="button" tabindex="0" aria-label="Open birthday envelope">
+          <div class="envelope-flap" id="envelope-flap"></div>
+          <div class="envelope-pocket"></div>
+          <div class="envelope-seal" id="envelope-seal">
+            <span>✨ 21</span>
+          </div>
+
+          <!-- Letter Paper Inside -->
+          <article class="letter-paper" id="letter-paper">
+            <div class="letter-inner">
+              <div class="letter-stamp">🎂 21st</div>
+              <h3 class="letter-salutation">Happiest Birthdayyy Sneha!!</h3>
+              <div class="letter-body" id="letter-body-content">
+                <p class="letter-paragraph">
+                  Wishing you many many happy returns of the day...<br>
+                  May this letter finds "She" who is,<br>
+                  Insanely strong, kind, trustworthy, understanding,<br>
+                  helpful, adorable, cute and an all time clumsyhead.
+                </p>
+                <p class="letter-paragraph">
+                  I am literally blessed to have you as my bestest friend.<br>
+                  may all the butterflies play around you...<br>
+                  may all that lavender from the tree fall over you while you walk through that lane...<br>
+                  may the most aromatic bouquet find its way to you...<br>
+                  may all the joyful and happy things always happen to you...
+                </p>
+                <p class="letter-paragraph">
+                  and if you ever think or feel heavy...
+                </p>
+                <p class="letter-paragraph highlight-quote">
+                  REMEMBER!!<br>
+                  I'll always be one call or text away.
+                </p>
+              </div>
+              <div class="letter-signoff">
+                <span class="sign-greeting">Enjoy your day,</span>
+                <span class="sign-name">– Kartik</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="envelope-controls">
+          <button id="toggle-envelope-btn" class="btn-secondary">
+            <span id="envelope-btn-text">Open Envelope ✉️</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. FRIENDSHIP TIME COUNTER ==================== -->
+    <section id="counter" class="section-container counter-section">
+      <div class="section-header">
+        <span class="section-tag">Since 23 November 2024</span>
+        <h2 class="section-title">Our friendship so far 💛</h2>
+        <p class="section-desc">...and counting every second together.</p>
+      </div>
+
+      <div class="counter-grid" id="friendship-timer-grid">
+        <div class="counter-card glass-card">
+          <div class="counter-num" id="count-years">0</div>
+          <div class="counter-label">Years</div>
+        </div>
+        <div class="counter-card glass-card">
+          <div class="counter-num" id="count-months">0</div>
+          <div class="counter-label">Months</div>
+        </div>
+        <div class="counter-card glass-card">
+          <div class="counter-num" id="count-days">0</div>
+          <div class="counter-label">Days</div>
+        </div>
+        <div class="counter-card glass-card">
+          <div class="counter-num" id="count-hours">00</div>
+          <div class="counter-label">Hours</div>
+        </div>
+        <div class="counter-card glass-card">
+          <div class="counter-num" id="count-minutes">00</div>
+          <div class="counter-label">Minutes</div>
+        </div>
+        <div class="counter-card glass-card">
+          <div class="counter-num" id="count-seconds">00</div>
+          <div class="counter-label">Seconds</div>
+        </div>
+      </div>
+
+      <div class="total-days-badge glass-card">
+        <span class="badge-icon">🌟</span>
+        <span class="badge-text">
+          That’s a total of <strong id="total-days-count">0</strong> unforgettable days of chaos, laughter, and
+          unbreakable friendship!
+        </span>
+      </div>
+    </section>
+
+    <!-- ==================== 4. PHOTO GALLERY ==================== -->
+    <section id="gallery" class="section-container gallery-section">
+      <div class="section-header">
+        <span class="section-tag">A Walk Down Memory Lane</span>
+        <h2 class="section-title">Moments & Memories 📸</h2>
+        <p class="section-desc">Every picture has a story, and each one makes me smile. Tap any photo to enlarge.</p>
+      </div>
+
+      <!-- Gallery Category Filters -->
+      <div class="gallery-filters" id="gallery-filters">
+        <button class="filter-btn active" data-filter="all">All Memories (60)</button>
+        <button class="filter-btn" data-filter="image">Photos (44)</button>
+        <button class="filter-btn" data-filter="video">Videos (16) 🎬</button>
+        <button class="filter-btn slideshow-trigger-btn" id="start-slideshow-btn" title="Watch full memory slideshow with music">▶ Start Slideshow ✨</button>
+      </div>
+
+      <!-- Masonry Gallery Container (Preserving original natural size of all pictures and videos) -->
+      <div class="gallery-masonry" id="gallery-container">
+        <!-- Rendered dynamically by script.js from all 60 media items -->
+      </div>
+    </section>
+
+    <!-- Lightbox Modal (Supports Images and Videos at Original Proportions with Loop) -->
+    <div id="lightbox-modal" class="lightbox-modal" role="dialog" aria-modal="true" aria-label="Photo Preview" hidden>
+      <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+      <div class="lightbox-content">
+        <button id="lightbox-close" class="lightbox-btn close-btn" aria-label="Close Lightbox">✕</button>
+        <button id="lightbox-prev" class="lightbox-btn prev-btn" aria-label="Previous photo">❮</button>
+        <div class="lightbox-img-wrapper">
+          <img id="lightbox-img" src="" alt="Enlarged photo memory">
+          <video id="lightbox-video" class="lightbox-video" controls playsinline loop></video>
+          <p id="lightbox-caption" class="lightbox-caption"></p>
+        </div>
+        <button id="lightbox-next" class="lightbox-btn next-btn" aria-label="Next photo">❯</button>
+      </div>
+    </div>
+
+    <!-- ==================== CINEMATIC MEMORY SLIDESHOW MODAL ==================== -->
+    <div id="slideshow-modal" class="slideshow-modal" role="dialog" aria-modal="true" aria-label="Memories Slideshow" hidden>
+      <div class="slideshow-backdrop" id="slideshow-backdrop"></div>
+      <div class="slideshow-wrapper">
+        <div class="slideshow-header">
+          <div class="slideshow-track-info">
+            <span class="music-wave-mini"><span></span><span></span><span></span></span>
+            <span class="slideshow-song-name">Now Playing: <strong>Frank Ocean – Thinkin Bout You 🎵</strong></span>
+          </div>
+          <div class="slideshow-header-right">
+            <span id="slideshow-counter" class="slideshow-counter-badge">1 / 60</span>
+            <button id="slideshow-close" class="slideshow-btn close-btn" aria-label="Close Slideshow" title="Close Slideshow (Music keeps playing)">✕</button>
+          </div>
+        </div>
+
+        <div class="slideshow-media-container" id="slideshow-media-container">
+          <img id="slideshow-img" src="" alt="Slideshow memory" class="slideshow-media-el">
+          <video id="slideshow-video" class="slideshow-media-el" playsinline muted preload="auto"></video>
+          <div class="slideshow-overlay-caption">
+            <p id="slideshow-caption" class="slideshow-caption-text"></p>
+          </div>
+        </div>
+
+        <div class="slideshow-progress-bar">
+          <div id="slideshow-progress-fill" class="slideshow-progress-fill"></div>
+        </div>
+
+        <div class="slideshow-footer">
+          <button id="slideshow-prev-btn" class="slideshow-ctrl-btn" aria-label="Previous Slide">❮ Prev</button>
+          <button id="slideshow-toggle-btn" class="slideshow-ctrl-btn play-pause-btn" aria-label="Pause or Play">⏸ Pause</button>
+          <button id="slideshow-next-btn" class="slideshow-ctrl-btn" aria-label="Next Slide">Next ❯</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 5. MESSAGE CARDS ==================== -->
+    <section id="messages" class="section-container messages-section">
+      <div class="section-header">
+        <span class="section-tag">Little Reminders</span>
+        <h2 class="section-title">Open When... 💌</h2>
+        <p class="section-desc">Tap each card to flip it over and read a personal message whenever you need it.</p>
+      </div>
+
+      <div class="cards-grid" id="message-cards-container">
+        <!-- Rendered dynamically by script.js from the messageCards array -->
+      </div>
+    </section>
+
+    <!-- ==================== 6. CLOSING & MAKE A WISH ==================== -->
+    <section id="wishes" class="section-container closing-section">
+      <div class="closing-card glass-card">
+        <span class="section-tag">The Big 21 Finale</span>
+        <h2 class="closing-title">Here's to 21, Sneha! 🥂</h2>
+        <p class="closing-subtitle">
+          Close your eyes, make the deepest wish in your heart, and blow out the candles!
+        </p>
+
+        <!-- Interactive Birthday Cake -->
+        <div class="cake-stage">
+          <div class="birthday-cake" id="birthday-cake" role="button" tabindex="0"
+            aria-label="Click to blow out the candles and make a wish">
+            <!-- Candles -->
+            <div class="candles-wrapper">
+              <div class="candle candle-1">
+                <div class="flame" id="flame-1"></div>
+                <div class="smoke" id="smoke-1"></div>
+              </div>
+              <div class="candle candle-2">
+                <div class="flame" id="flame-2"></div>
+                <div class="smoke" id="smoke-2"></div>
+              </div>
+              <div class="candle candle-3">
+                <div class="flame" id="flame-3"></div>
+                <div class="smoke" id="smoke-3"></div>
+              </div>
+            </div>
+            <!-- Cake Layers -->
+            <div class="cake-top-layer">
+              <div class="frosting"></div>
+              <div class="frosting-drip"></div>
+              <div class="frosting-drip"></div>
+              <div class="frosting-drip"></div>
+            </div>
+            <div class="cake-middle-layer"></div>
+            <div class="cake-bottom-layer">
+              <div class="cake-plate"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cake-instructions">
+          <button id="blow-candles-btn" class="btn-primary">
+            Make a wish 🕯️
+          </button>
+          <p id="wish-status-text" class="wish-status">Click the cake or button to blow out the candles!</p>
+        </div>
+
+        <!-- Wish Granted Celebration Box -->
+        <div id="wish-granted-banner" class="wish-granted-banner hidden">
+          <div class="sparkle-icon">✨ 💖 🌸</div>
+          <h3>Wish Sent to the Universe!</h3>
+          <p>May every single dream you hold close to your heart come true in your 21st year and beyond.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p class="footer-love">Made with love by <strong>Kartik</strong> for <strong>Sneha</strong> 💛</p>
+      <p class="footer-sub">Happy 21st Birthday • Forever grateful for your friendship</p>
+    </div>
+  </footer>
+
+  <!-- Sparkle Particle Trail Canvas (Desktop) -->
+  <canvas id="cursor-canvas" class="cursor-canvas" aria-hidden="true"></canvas>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+</body>
+
+</html>
